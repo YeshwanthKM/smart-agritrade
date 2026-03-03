@@ -302,7 +302,7 @@ def guest_login(role):
         return redirect(url_for('home'))
     
     guest_user = {
-        'id': f'guest_{secrets.token_hex(4)}',
+        'id': f'guest_{role}_id',
         'name': f'Guest {role.capitalize()}',
         'email': f'guest_{role}@example.com',
         'role': role,
@@ -319,8 +319,6 @@ def farmer_dashboard():
 
     crops = load_data(CROPS_FILE)
     if request.method == 'POST':
-        if session['user'].get('is_guest'):
-            flash('Guest users can see but not save new listings permanently.', 'info')
         
         crop_name = request.form.get('crop_name', '').lower()
         quantity = request.form.get('quantity')
