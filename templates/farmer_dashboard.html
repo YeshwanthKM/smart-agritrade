@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html>
-
-<head>
-    <title>Smart AgriTrade - {{ get_text('farmer_dashboard') }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script>
-        const theme = localStorage.getItem('theme') || 'light';
-        document.documentElement.setAttribute('data-theme', theme);
-    </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart AgriTrade - {{ get_text('farmer_dashboard') }}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<script>
+    const theme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', theme);
+</script>
 </head>
 
 <body>
@@ -79,36 +78,38 @@
 
         <div style="margin-top: 3rem;">
             <h2>{{ get_text('my_crop_listings') }}</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>{{ get_text('crop_name') }}</th>
-                        <th>{{ get_text('quantity') }} (kg)</th>
-                        <th>{{ get_text('price_per_kg') }}</th>
-                        <th>{{ get_text('location') }}</th>
-                        <th>{{ get_text('action') }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for crop in crops %}
-                    <tr>
-                        <td style="font-weight: 600;">{{ get_text(crop.crop_name)|capitalize }}</td>
-                        <td>{{ crop.quantity }}</td>
-                        <td>₹{{ crop.price_per_kg }}</td>
-                        <td>{{ crop.location }}</td>
-                        <td>
-                            <a href="{{ url_for('delete_crop', crop_id=crop.id) }}"
-                                style="color: red; border: 1px solid red; padding: 2px 8px; font-size: 0.75rem;"
-                                onclick="return confirm('Delete?')">{{ get_text('delete') }}</a>
-                        </td>
-                    </tr>
-                    {% else %}
-                    <tr>
-                        <td colspan="5" style="text-align: center; color: var(--secondary-text);">No data.</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>{{ get_text('crop_name') }}</th>
+                            <th>{{ get_text('quantity') }} (kg)</th>
+                            <th>{{ get_text('price_per_kg') }}</th>
+                            <th>{{ get_text('location') }}</th>
+                            <th>{{ get_text('action') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for crop in crops %}
+                        <tr>
+                            <td style="font-weight: 600;">{{ get_text(crop.crop_name)|capitalize }}</td>
+                            <td>{{ crop.quantity }}</td>
+                            <td>₹{{ crop.price_per_kg }}</td>
+                            <td>{{ crop.location }}</td>
+                            <td>
+                                <a href="{{ url_for('delete_crop', crop_id=crop.id) }}"
+                                    style="color: red; border: 1px solid red; padding: 2px 8px; font-size: 0.75rem;"
+                                    onclick="return confirm('Delete?')">{{ get_text('delete') }}</a>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="5" style="text-align: center; color: var(--secondary-text);">No data.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <div style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--nav-border);">
