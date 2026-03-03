@@ -1,24 +1,37 @@
 import os
-import json
+import secrets
 from flask import Flask, render_template, request, redirect, url_for, session, flash
+from supabase import create_client, Client
 
 app = Flask(__name__)
-app.secret_key = "agri_trade_secret_key"  # Simple secret key for sessions
+app.secret_key = secrets.token_hex(16)
 
-# File names
-USERS_FILE = 'users.json'
-CROPS_FILE = 'crops.json'
-ORDERS_FILE = 'orders.json'
+# Supabase Configuration
+SUPABASE_URL = os.environ.get('SUPABASE_URL')
+SUPABASE_KEY = os.environ.get('SUPABASE_KEY')
 
-# MSP Reference
+# Initialize Supabase Client
+supabase: Client = None
+if SUPABASE_URL and SUPABASE_KEY:
+    supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+
+# MSP Reference Data (Government Guidelines)
 MSP_DATA = {
-    "rice": 20,
-    "wheat": 22,
-    "tomato": 15,
-    "onion": 18
+    'rice': 2183,
+    'wheat': 2275,
+    'maize': 2090,
+    'ragi': 3846,
+    'bajra': 2500,
+    'tur': 7000,
+    'moong': 8558,
+    'urad': 6950,
+    'groundnut': 6377,
+    'sunflower': 6760,
+    'soyabean': 4600,
+    'cotton': 6620
 }
 
-# Translations
+# English and Tamil Translations
 TRANSLATIONS = {
     'en': {
         'home': 'Home',
@@ -30,8 +43,8 @@ TRANSLATIONS = {
         'get_started': 'Get Started',
         'farmer_login': 'Farmer Login',
         'buyer_login': 'Buyer Login',
-        'tagline': 'Direct Agricultural Trade with MSP Protection',
-        'tagline_sub': 'Empowering farmers with fair pricing and providing buyers with fresh, local produce.',
+        'tagline': 'Smart AgriTrade',
+        'tagline_sub': 'A Transparent Farmer–Buyer Digital Marketplace.',
         'footer': 'Simple. Fair. Professional.',
         'name': 'Full Name',
         'email': 'Email Address',
@@ -41,7 +54,7 @@ TRANSLATIONS = {
         'buyer': 'Buyer',
         'create_account': 'Create Account',
         'already_account': 'Already have an account?',
-        'no_account': 'Don\'t have an account?',
+        'no_account': "Don't have an account?",
         'login_here': 'Login here',
         'register_here': 'Register here',
         'welcome_back': 'Welcome Back',
@@ -189,7 +202,7 @@ TRANSLATIONS = {
         'sol_b2': 'விவசாயி விலையை MSP உடன் ஒப்பிட்டுப் பாருங்கள்',
         'sol_b3': 'பாதுகாப்பான ஆர்டர்களை வழங்கவும்',
         'fair_pricing': 'நியாயமான விலை வழிமுறை',
-        'pricing_desc': 'குறைந்த விலையிடுவதைத் தடுக்கவும், விவசாயிகளின் வருமானத்தைப் பாதுகாக்கவும் மற்றும் வெளிப்படையான பரிவர்த்தனைகளை ஊக்குவிக்கவும் இந்த அமைப்பு MSP (குறைந்தபட்ச ஆதரவு விலை) குறிப்பு மதிப்புகளை ஒருங்கிணைக்கிறது.',
+        'pricing_desc': 'குறைந்த விலையிடுவதைத் தடுக்கவும், விவசாயிகளின் வருமானத்தைப் பாதுகாக்கவும் மற்றும் வெளிப்படையான பரிவர்த்தனைகளை ஊக்குவிக்கிறது.',
         'pricing_gov': 'MSP மதிப்புகள் இந்திய அரசாங்கத்தின் வேளாண் செலவுகள் மற்றும் விலைகளுக்கான ஆணையம் வழங்கிய வழிகாட்டுதல்களின் அடிப்படையில் அமைந்துள்ளன.',
         'expected_impact': 'எதிர்பார்க்கப்படும் தாக்கம்',
         'impact_1': 'விவசாயிகளின் லாபம் அதிகரிப்பு',
@@ -210,41 +223,22 @@ TRANSLATIONS = {
     }
 }
 
-# Helper functions for JSON handling
-def load_data(filename):
-    if not os.path.exists(filename) or os.stat(filename).st_size == 0:
-        return []
-    try:
-        with open(filename, 'r', encoding='utf-8') as f:
-            return json.load(f)
-    except Exception as e:
-        print(f"Error reading {filename}: {e}")
-        return []
-
-def save_data(filename, data):
-    try:
-        with open(filename, 'w', encoding='utf-8') as f:
-            json.dump(data, f, indent=4, ensure_ascii=False)
-    except Exception as e:
-        print(f"Error writing to {filename}: {e}")
-
 @app.context_processor
-def inject_localization():
-    lang = session.get('lang', 'en')
+def inject_translations():
     def get_text(key):
+        lang = session.get('lang', 'en')
         return TRANSLATIONS.get(lang, TRANSLATIONS['en']).get(key, key)
     return dict(get_text=get_text)
 
-@app.route('/set_language/<lang>')
-def set_language(lang):
-    if lang in TRANSLATIONS:
-        session['lang'] = lang
-    return redirect(request.referrer or url_for('home'))
-
-# Routes
 @app.route('/')
 def home():
     return render_template('home.html')
+
+@app.route('/set_language/<lang>')
+def set_language(lang):
+    if lang in ['en', 'ta']:
+        session['lang'] = lang
+    return redirect(request.referrer or url_for('home'))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -254,23 +248,35 @@ def register():
         password = request.form.get('password')
         role = request.form.get('role')
 
-        users = load_data(USERS_FILE)
-        # Check if email exists
-        if any(u['email'] == email for u in users):
-            flash("Email already registered!", "error")
+        if not all([name, email, password, role]):
+            flash('All fields are required', 'error')
             return redirect(url_for('register'))
 
-        new_user = {
-            "name": name,
-            "email": email,
-            "password": password,
-            "role": role
-        }
-        users.append(new_user)
-        save_data(USERS_FILE, users)
-        flash("Registration successful! Please login.", "success")
-        return redirect(url_for('login'))
-    
+        if not supabase:
+            flash('Database connection not configured.', 'error')
+            return redirect(url_for('register'))
+
+        try:
+            # Check if user already exists
+            existing = supabase.table('users').select('*').eq('email', email).execute()
+            if existing.data:
+                flash('Email already registered', 'error')
+                return redirect(url_for('register'))
+
+            # Insert new user
+            supabase.table('users').insert({
+                'name': name,
+                'email': email,
+                'password': password,
+                'role': role
+            }).execute()
+
+            flash('Registration successful! Please login.', 'success')
+            return redirect(url_for('login'))
+        except Exception as e:
+            flash(f'Error during registration: {str(e)}', 'error')
+            return redirect(url_for('register'))
+
     return render_template('register.html')
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -278,185 +284,188 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
-        
-        users = load_data(USERS_FILE)
-        user = next((u for u in users if u['email'] == email and u['password'] == password), None)
-        
-        if user:
-            session['user'] = user
-            if user['role'] == 'farmer':
-                return redirect(url_for('farmer_dashboard'))
-            else:
-                return redirect(url_for('buyer_dashboard'))
-        else:
-            flash("Invalid email or password", "error")
-            
-    return render_template('login.html')
 
-@app.route('/logout')
-def logout():
-    session.pop('user', None)
-    return redirect(url_for('home'))
+        if not supabase:
+            flash('Database connection not configured.', 'error')
+            return redirect(url_for('login'))
+
+        try:
+            user_data = supabase.table('users').select('*').eq('email', email).eq('password', password).execute()
+            if user_data.data:
+                session['user'] = user_data.data[0]
+                if session['user']['role'] == 'farmer':
+                    return redirect(url_for('farmer_dashboard'))
+                return redirect(url_for('buyer_dashboard'))
+            
+            flash('Invalid email or password', 'error')
+        except Exception as e:
+            flash(f'Login error: {str(e)}', 'error')
+
+    return render_template('login.html')
 
 @app.route('/farmer_dashboard', methods=['GET', 'POST'])
 def farmer_dashboard():
     if 'user' not in session or session['user']['role'] != 'farmer':
         return redirect(url_for('login'))
-    
-    farmer_email = session['user']['email']
-    crops = load_data(CROPS_FILE)
-    orders = load_data(ORDERS_FILE)
-    
-    # Calculate earnings
-    total_earnings = sum(float(o['total_price']) for o in orders if o['farmer_email'] == farmer_email)
+
+    if not supabase:
+        flash('Database connection not configured.', 'error')
+        return redirect(url_for('home'))
 
     if request.method == 'POST':
         crop_name = request.form.get('crop_name', '').lower()
-        quantity = request.form.get('quantity', '0')
-        price = request.form.get('price_per_kg', '0')
-        location = request.form.get('location', '')
+        quantity = request.form.get('quantity')
+        price_per_kg = request.form.get('price_per_kg')
+        location = request.form.get('location')
 
-        if not crop_name or not quantity or not price:
-            flash("Please fill all fields", "error")
+        if not all([crop_name, quantity, price_per_kg, location]):
+            flash('All fields are required', 'error')
             return redirect(url_for('farmer_dashboard'))
 
         try:
-            qty_val = float(quantity)
-            price_val = float(price)
+            qty = float(quantity)
+            price = float(price_per_kg)
+            msp = MSP_DATA.get(crop_name, 0)
+            
+            if price < msp:
+                flash(f'Price cannot be lower than MSP for {crop_name} (₹{msp})', 'error')
+            else:
+                supabase.table('crops').insert({
+                    'farmer_id': session['user']['id'],
+                    'crop_name': crop_name,
+                    'quantity': qty,
+                    'price_per_kg': price,
+                    'location': location
+                }).execute()
+                flash('Listing added successfully', 'success')
         except ValueError:
-            flash("Invalid quantity or price", "error")
-            return redirect(url_for('farmer_dashboard'))
+            flash('Invalid quantity or price', 'error')
+        except Exception as e:
+            flash(f'Error adding listing: {str(e)}', 'error')
 
-        # MSP Validation
-        if crop_name in MSP_DATA:
-            min_price = MSP_DATA[crop_name]
-            if price_val < min_price:
-                flash(f"Error: Price for {crop_name} cannot be less than MSP (₹{min_price}/kg).", "error")
-                return redirect(url_for('farmer_dashboard'))
+    # Fetch farmer's crops
+    user_crops = supabase.table('crops').select('*').eq('farmer_id', session['user']['id']).execute().data
+    
+    # Calculate earnings (sum of completed orders)
+    orders = supabase.table('orders').select('total_price').eq('farmer_id', session['user']['id']).eq('status', 'completed').execute().data
+    earnings = sum(order['total_price'] for order in orders)
 
-        new_crop = {
-            "id": max([c['id'] for c in crops] + [0]) + 1,
-            "farmer_email": farmer_email,
-            "crop_name": crop_name,
-            "quantity": qty_val,
-            "price_per_kg": price_val,
-            "location": location
-        }
-        crops.append(new_crop)
-        save_data(CROPS_FILE, crops)
-        flash("Crop listed successfully!", "success")
-        return redirect(url_for('farmer_dashboard'))
+    return render_template('farmer_dashboard.html', crops=user_crops, earnings=earnings, msp_data=MSP_DATA)
 
-    # Only show crops listed by this farmer
-    my_crops = [c for c in crops if c['farmer_email'] == farmer_email]
-    return render_template('farmer_dashboard.html', crops=my_crops, msp_data=MSP_DATA, earnings=total_earnings)
-
-@app.route('/delete_crop/<int:crop_id>')
+@app.route('/delete_crop/<crop_id>')
 def delete_crop(crop_id):
     if 'user' not in session or session['user']['role'] != 'farmer':
         return redirect(url_for('login'))
     
-    crops = load_data(CROPS_FILE)
-    crops = [c for c in crops if not (c['id'] == crop_id and c['farmer_email'] == session['user']['email'])]
-    save_data(CROPS_FILE, crops)
-    flash("Crop listing deleted.", "success")
+    if supabase:
+        supabase.table('crops').delete().eq('id', crop_id).eq('farmer_id', session['user']['id']).execute()
+        flash('Listing deleted', 'success')
     return redirect(url_for('farmer_dashboard'))
 
 @app.route('/buyer_dashboard')
 def buyer_dashboard():
     if 'user' not in session or session['user']['role'] != 'buyer':
         return redirect(url_for('login'))
+
+    if not supabase:
+        flash('Database connection not configured.', 'error')
+        return redirect(url_for('home'))
+
+    search = request.args.get('search', '').lower()
+    location = request.args.get('location', '').lower()
+
+    query = supabase.table('crops').select('*, users(name)')
+    if search:
+        query = query.ilike('crop_name', f'%{search}%')
+    if location:
+        query = query.ilike('location', f'%{location}%')
     
-    search_query = request.args.get('search', '').lower()
-    loc_filter = request.args.get('location', '').lower()
+    all_crops = query.execute().data
     
-    crops = load_data(CROPS_FILE)
-    filtered_crops = []
-    for c in crops:
-        if (search_query in c['crop_name']) and (loc_filter in c['location'].lower()):
-            # Add MSP value for display
-            c['msp_value'] = MSP_DATA.get(c['crop_name'], "N/A")
-            filtered_crops.append(c)
-            
-    my_orders = [o for o in load_data(ORDERS_FILE) if o['buyer_email'] == session['user']['email']]
-    return render_template('buyer_dashboard.html', crops=filtered_crops, orders=my_orders)
+    # Fetch buyer's orders
+    user_orders = supabase.table('orders').select('*, crops(crop_name), users!orders_farmer_id_fkey(name)').eq('buyer_id', session['user']['id']).execute().data
+
+    return render_template('buyer_dashboard.html', crops=all_crops, orders=user_orders)
 
 @app.route('/place_order', methods=['POST'])
 def place_order():
     if 'user' not in session or session['user']['role'] != 'buyer':
         return redirect(url_for('login'))
-    
-    crop_id_raw = request.form.get('crop_id')
-    qty_raw = request.form.get('quantity')
-    
-    if not crop_id_raw or not qty_raw:
-        flash("Invalid order request", "error")
+
+    crop_id = request.form.get('crop_id')
+    quantity = request.form.get('quantity')
+
+    if not all([crop_id, quantity]) or not supabase:
+        flash('Invalid order details', 'error')
         return redirect(url_for('buyer_dashboard'))
-        
+
     try:
-        crop_id = int(crop_id_raw)
-        qty_to_buy = float(qty_raw)
-    except ValueError:
-        flash("Invalid quantity", "error")
-        return redirect(url_for('buyer_dashboard'))
-    
-    crops = load_data(CROPS_FILE)
-    crop = next((c for c in crops if c['id'] == crop_id), None)
-    
-    if crop and crop['quantity'] >= qty_to_buy:
-        total_price = qty_to_buy * crop['price_per_kg']
+        qty_to_buy = float(quantity)
+        crop_data = supabase.table('crops').select('*').eq('id', crop_id).execute().data
         
-        # Create order
-        order = {
-            "buyer_email": session['user']['email'],
-            "farmer_email": crop['farmer_email'],
-            "crop_name": crop['crop_name'],
-            "quantity": qty_to_buy,
-            "total_price": total_price,
-            "status": "Placed"
-        }
-        orders = load_data(ORDERS_FILE)
-        orders.append(order)
-        save_data(ORDERS_FILE, orders)
+        if not crop_data:
+            flash('Crop not found', 'error')
+            return redirect(url_for('buyer_dashboard'))
         
-        # Update crop quantity
-        crop['quantity'] -= qty_to_buy
-        save_data(CROPS_FILE, crops)
-        
-        flash(f"Order placed! Total: ₹{total_price}", "success")
-    else:
-        flash("Insufficient quantity available!", "error")
-        
+        crop = crop_data[0]
+        if qty_to_buy > crop['quantity']:
+            flash('Not enough stock', 'error')
+        else:
+            total_price = qty_to_buy * crop['price_per_kg']
+            
+            # Create order
+            supabase.table('orders').insert({
+                'buyer_id': session['user']['id'],
+                'crop_id': crop_id,
+                'farmer_id': crop['farmer_id'],
+                'quantity': qty_to_buy,
+                'total_price': total_price,
+                'status': 'completed'  # Simplified for demo
+            }).execute()
+
+            # Update crop quantity
+            new_qty = crop['quantity'] - qty_to_buy
+            if new_qty <= 0:
+                supabase.table('crops').delete().eq('id', crop_id).execute()
+            else:
+                supabase.table('crops').update({'quantity': new_qty}).eq('id', crop_id).execute()
+
+            flash('Order placed successfully!', 'success')
+    except Exception as e:
+        flash(f'Ordering error: {str(e)}', 'error')
+
     return redirect(url_for('buyer_dashboard'))
 
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
     if 'user' not in session:
         return redirect(url_for('login'))
-    
+
     if request.method == 'POST':
         name = request.form.get('name')
         new_password = request.form.get('password')
-        
-        if not name:
-            flash("Name cannot be empty", "error")
-            return redirect(url_for('settings'))
+
+        update_data = {'name': name}
+        if new_password:
+            update_data['password'] = new_password
+
+        try:
+            supabase.table('users').update(update_data).eq('id', session['user']['id']).execute()
             
-        users = load_data(USERS_FILE)
-        for u in users:
-            if u['email'] == session['user']['email']:
-                u['name'] = name
-                if new_password:
-                    u['password'] = new_password
-                session['user'] = u
-                break
-        save_data(USERS_FILE, users)
-        flash("Profile updated successfully!", "success")
-        return redirect(url_for('settings'))
-        
+            # Refresh session
+            updated_user = supabase.table('users').select('*').eq('id', session['user']['id']).execute().data[0]
+            session['user'] = updated_user
+            flash('Settings updated', 'success')
+        except Exception as e:
+            flash(f'Update error: {str(e)}', 'error')
+
     return render_template('settings.html')
 
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('home'))
+
 if __name__ == '__main__':
-    import os
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
