@@ -296,22 +296,6 @@ def login():
         flash('Invalid credentials', 'error')
     return render_template('login.html')
 
-@app.route('/guest_login/<role>')
-def guest_login(role):
-    if role not in ['farmer', 'buyer']:
-        return redirect(url_for('home'))
-    
-    guest_user = {
-        'id': f'guest_{role}_id',
-        'name': f'Guest {role.capitalize()}',
-        'email': f'guest_{role}@example.com',
-        'role': role,
-        'is_guest': True
-    }
-    session['user'] = guest_user
-    flash(f"Logged in as Guest {role.capitalize()}", 'success')
-    return redirect(url_for('farmer_dashboard' if role == 'farmer' else 'buyer_dashboard'))
-
 @app.route('/farmer_dashboard', methods=['GET', 'POST'])
 def farmer_dashboard():
     if 'user' not in session or session['user']['role'] != 'farmer':
@@ -319,7 +303,6 @@ def farmer_dashboard():
 
     crops = load_data(CROPS_FILE)
     if request.method == 'POST':
-        
         crop_name = request.form.get('crop_name', '').lower()
         quantity = request.form.get('quantity')
         price = request.form.get('price_per_kg')
@@ -385,6 +368,7 @@ def buyer_dashboard():
         if location and location not in c['location'].lower(): continue
         c_copy = c.copy()
         c_copy['farmer_name'] = farmer_map.get(c['farmer_id'], 'Farmer')
+        c_copy['msp_value'] = MSP_DATA.get(c['crop_name'].lower(), 0)
         filtered_crops.append(c_copy)
 
     orders = load_data(ORDERS_FILE)
