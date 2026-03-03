@@ -107,6 +107,8 @@
                         <th>{{ get_text('crop_name') }}</th>
                         <th>{{ get_text('quantity') }}</th>
                         <th>{{ get_text('price') }}</th>
+                        <th>{{ get_text('farmer_name') }}</th>
+                        <th>{{ get_text('farmer_contact') }}</th>
                         <th>{{ get_text('status') }}</th>
                     </tr>
                 </thead>
@@ -116,6 +118,8 @@
                         <td style="font-weight: 600;">{{ get_text(order.crop_name)|capitalize }}</td>
                         <td>{{ order.quantity }} kg</td>
                         <td style="font-weight: 600;">₹{{ order.total_price }}</td>
+                        <td>{{ order.farmer_name }}</td>
+                        <td>{{ order.farmer_phone }}</td>
                         <td>
                             <span
                                 style="background: var(--text-color); color: var(--bg-color); padding: 2px 8px; border-radius: 10px; font-size: 0.75rem;">{{
@@ -124,7 +128,7 @@
                     </tr>
                     {% else %}
                     <tr>
-                        <td colspan="4" style="text-align: center; color: var(--secondary-text);">No data.</td>
+                        <td colspan="6" style="text-align: center; color: var(--secondary-text);">No data.</td>
                     </tr>
                     {% endfor %}
                 </tbody>

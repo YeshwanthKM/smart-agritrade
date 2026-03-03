@@ -145,127 +145,18 @@ TRANSLATIONS = {
         'sold_items': 'Sold Items',
         'farmer_contact': 'Farmer Contact',
         'no_phone': 'No phone provided',
-    },
-    'ta': {
-        'home': 'முகப்பு',
-        'login': 'உள்நுழை',
-        'register': 'பதிவு செய்',
-        'settings': 'அமைப்புகள்',
-        'logout': 'வெளியேறு',
-        'welcome': 'ஸ்மார்ட் அக்ரிட்ரேடுக்கு வரவேற்கிறோம், விவசாயிகள் மற்றும் வாங்குபவர்களை நேரடியாக MSP பாதுகாப்புடன் இணைக்கிறோம்.',
-        'get_started': 'தொடங்கவும்',
-        'farmer_login': 'விவசாயி உள்நுழைவு',
-        'buyer_login': 'வாங்குபவர் உள்நுழைவு',
-        'guest_login': 'விருந்தினர் உள்நுழைவு',
-        'tagline': 'ஸ்மார்ட் அக்ரிட்ரேட்',
-        'tagline_sub': 'விவசாயி-வாங்குபவர் இடையேயான ஒரு வெளிப்படையான டிஜிட்டல் சந்தை.',
-        'footer': 'எளிமையானது. நியாயமானது. தொழில்முறை.',
-        'name': 'முழு பெயர்',
-        'email': 'மின்னஞ்சல் முகவரி',
-        'password': 'கடவுச்சொல்',
-        'role': 'பங்கு',
-        'farmer': 'விவசாயி',
-        'buyer': 'வாங்குபவர்',
-        'create_account': 'கணக்கை உருவாக்கு',
-        'already_account': 'ஏற்கனவே கணக்கு உள்ளதா?',
-        'no_account': 'கணக்கு இல்லையா?',
-        'login_here': 'இங்கே உள்நுழையவும்',
-        'register_here': 'இங்கே பதிவு செய்யவும்',
-        'welcome_back': 'மீண்டும் வருக',
-        'farmer_dashboard': 'விவசாயி டாஷ்போர்டு',
-        'buyer_dashboard': 'வாங்குபவர் டாஷ்போர்டு',
-        'total_earnings': 'மொத்த வருவாய்',
-        'active_listings': 'செயலில் உள்ள பட்டியல்கள்',
-        'list_new_crop': 'புதிய பயிர் பட்டியல்',
-        'msp_reference': 'MSP குறிப்பு',
-        'crop_name': 'பயிரின் பெயர்',
-        'quantity': 'அளவு',
-        'price_per_kg': 'ஒரு கிலோ விலை',
-        'location': 'இடம்',
-        'add_new_listing': 'புதிய பட்டியலைச் சேர்க்கவும்',
-        'my_crop_listings': 'எனது பயிர் பட்டியல்கள்',
-        'action': 'நடவடிக்கை',
-        'delete': 'நீக்கு',
-        'search_marketplace': 'சந்தையைத் தேடு',
-        'search': 'தேடு',
-        'clear': 'அழி',
-        'available_crops': 'கிடைக்கும் பயிர்கள்',
-        'price': 'விலை',
-        'stock': 'இருப்பு',
-        'order': 'ஆர்டர்',
-        'buy': 'வாங்கு',
-        'my_orders': 'எனது ஆர்டர்கள்',
-        'status': 'நிலை',
-        'profile_settings': 'சுயவிவர அமைப்புகள்',
-        'update_profile': 'சுயவிவரத்தைப் புதுப்பி',
-        'password_info': 'தற்போதைய கடவுச்சொல்லை வைத்திருக்க காலியாக விடவும்',
-        'save_changes': 'மாற்றங்களைச் சேமி',
-        'language': 'மொழி',
-        'english': 'ஆங்கிலம்',
-        'tamil': 'தமிழ்',
-        'project_overview': 'திட்ட மேலோட்டம்',
-        'problem_statement': 'சிக்கல் அறிக்கை',
-        'problem_desc': 'சிறு மற்றும் குறு விவசாயிகள் நேரடி சந்தை அணுகல் மற்றும் விலை வெளிப்படைத்தன்மை இல்லாததால் பெரும்பாலும் இடைத்தரகர்களை நம்பியிருக்கிறார்கள், இது குறைந்த ஊதியம் மற்றும் குறைந்த லாபத்திற்கு வழிவகுக்கிறது. விவசாயிகளை நேரடியாக வாங்குபவர்களுடன் இணைக்கும் எளிய, அணுகக்கூடிய டிஜிட்டல் தளம் தேவை.',
-        'our_objective': 'எங்கள் நோக்கம்',
-        'obj_1': 'நேரடி விவசாயி-வாங்குபவர் இணைப்பை வழங்குதல்',
-        'obj_2': 'MSP சரிபார்ப்பைப் பயன்படுத்தி நியாயமான பயிர் விலையை உறுதி செய்தல்',
-        'obj_3': 'விவசாயிகளின் வருமானம் மற்றும் வெளிப்படைத்தன்மையை அதிகரித்தல்',
-        'obj_4': 'விவசாயத்தில் டிஜிட்டல் உள்ளடக்கத்தை ஊக்குவித்தல்',
-        'our_solution': 'முன்மொழியப்பட்ட தீர்வு',
-        'sol_f_title': 'விவசாயி டாஷ்போர்டு',
-        'sol_f1': 'கிடைக்கும் பயிர்களை பட்டியலிடுங்கள்',
-        'sol_f2': 'MSP குறிப்பு விலையைப் பார்க்கவும்',
-        'sol_f3': 'ஆர்டர்களை நிர்வகிக்கவும்',
-        'sol_f4': 'வருவாயைக் கண்காணிக்கவும்',
-        'sol_b_title': 'வாங்குபவர் டாஷ்போர்டு',
-        'sol_b1': 'பயிர்களை பெயர் மற்றும் இருப்பிடத்தின் அடிப்படையில் தேடுங்கள்',
-        'sol_b2': 'விவசாயி விலையை MSP உடன் ஒப்பிட்டுப் பாருங்கள்',
-        'sol_b3': 'பாதுகாப்பான ஆர்டர்களை வழங்கவும்',
-        'fair_pricing': 'நியாயமான விலை வழிமுறை',
-        'pricing_desc': 'குறைந்த விலையிடுவதைத் தடுக்கவும், விவசாயிகளின் வருமானத்தைப் பாதுகாக்கவும் மற்றும் வெளிப்படையான பரிவர்த்தனைகளை ஊக்குவிக்கிறது.',
-        'pricing_gov': 'MSP மதிப்புகள் இந்திய அரசாங்கத்தின் வேளாண் செலவுகள் மற்றும் விலைகளுக்கான ஆணையம் வழங்கிய வழிகாட்டுதல்களின் அடிப்படையில் அமைந்துள்ளன.',
-        'expected_impact': 'எதிர்பார்க்கப்படும் தாக்கம்',
-        'impact_1': 'விவசாயிகளின் லாபம் அதிகரிப்பு',
-        'impact_2': 'இடைத்தரகர்கள் மீதான சார்பு குறைப்பு',
-        'impact_3': 'வெளிப்படையான விவசாய வர்த்தகம்',
-        'impact_4': 'வறுமையின்மை (SDG 1) மற்றும் பசியின்மை (SDG 2) ஆகியவற்றிற்கான ஆதரவு',
-        'tech_used': 'பயன்படுத்தப்பட்ட தொழில்நுட்பம்',
-        'tech_1': 'பைதான் பிளாஸ்க் (Python Flask)',
-        'tech_2': 'JSON தரவுத்தள சேமிப்பு',
-        'tech_3': 'HTML5 & CSS3 பதிலளிக்கும் UI',
-        'tech_4': 'Gunicorn & Render வரிசைப்படுத்தல்',
-        'short_about': 'ஸ்மார்ட் அக்ரிட்ரேட் பற்றி',
-        'short_desc': 'ஸ்மார்ட் அக்ரிட்ரேட் என்பது இடைத்தரகர்களைத் தவிர்க்கவும் நியாயமான பயிர் விலையை உறுதி செய்யவும் வடிவமைக்கப்பட்ட ஒரு டிஜிட்டல் சந்தையாகும். MSP அடிப்படையிலான சரிபார்ப்பை ஒருங்கிணைப்பதன் மூலம், விவசாயிகளை குறைந்த விலையில் இருந்து பாதுகாக்கிறது.',
-        'key_features': 'முக்கிய அம்சங்கள்',
-        'feature_msp': 'MSP விலை பாதுகாப்பு',
-        'feature_direct': 'நேரடி சந்தை அணுகல்',
-        'feature_secure': 'பாதுகாப்பான & வெளிப்படையான',
-        'phone': 'தொலைபேசி எண்',
-        'contact_details': 'தொடர்பு விவரங்கள்',
-        'buyer_name': 'வாங்குபவர் பெயர்',
-        'buyer_contact': 'வாங்குபவர் தொடர்பு',
-        'sold_items': 'விற்கப்பட்ட பொருட்கள்',
-        'farmer_contact': 'விவசாயி தொடர்பு',
-        'no_phone': 'தொலைபேசி எண் வழங்கப்படவில்லை',
     }
 }
 
 @app.context_processor
 def inject_translations():
     def get_text(key):
-        lang = session.get('lang', 'en')
-        return TRANSLATIONS.get(lang, TRANSLATIONS['en']).get(key, key)
+        return TRANSLATIONS['en'].get(key, key)
     return dict(get_text=get_text)
 
 @app.route('/')
 def home():
     return render_template('home.html')
-
-@app.route('/set_language/<lang>')
-def set_language(lang):
-    if lang in ['en', 'ta']:
-        session['lang'] = lang
-    return redirect(request.referrer or url_for('home'))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -406,7 +297,9 @@ def buyer_dashboard():
     for o in orders:
         if o['buyer_id'] == session['user']['id']:
             o_copy = o.copy()
-            o_copy['farmer_name'] = farmer_map.get(o['farmer_id'], 'Farmer')
+            farmer_info = farmer_map.get(o['farmer_id'], {'name': 'Farmer', 'phone': 'N/A'})
+            o_copy['farmer_name'] = farmer_info['name']
+            o_copy['farmer_phone'] = farmer_info['phone']
             user_orders.append(o_copy)
 
     return render_template('buyer_dashboard.html', crops=filtered_crops, orders=user_orders)
