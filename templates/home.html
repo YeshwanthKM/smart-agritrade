@@ -17,10 +17,17 @@
         <div class="nav">
             <div style="font-weight: 800; font-size: 1.5rem;">Smart AgriTrade</div>
             <div class="nav-links">
-                <button id="theme-toggle" class="btn" style="padding: 0.25rem 0.75rem;">🌓 Toggle Theme</button>
-                <a href="{{ url_for('set_language', lang='en' if session.get('lang') == 'ta' else 'ta') }}" class="btn"
-                    style="padding: 0.25rem 0.75rem;">🌐 {{ get_text('tamil') if session.get('lang', 'en') == 'en' else
-                    get_text('english') }}</a>
+                <a href="{{ url_for('login') }}">{{ get_text('login') }}</a>
+                <a href="{{ url_for('register') }}">{{ get_text('register') }}</a>
+                <a href="{{ url_for('guest_login', role='farmer') }}" style="border-color: #666; opacity: 0.8;">{{
+                    get_text('guest_login') }} ({{ get_text('farmer') }})</a>
+                <a href="{{ url_for('guest_login', role='buyer') }}" style="border-color: #666; opacity: 0.8;">{{
+                    get_text('guest_login') }} ({{ get_text('buyer') }})</a>
+                <button onclick="toggleTheme()" style="padding: 5px 10px;">🌓</button>
+                <a href="{{ url_for('set_language', lang='ta') if session.get('lang', 'en') == 'en' else url_for('set_language', lang='en') }}"
+                    style="padding: 5px 10px;">
+                    {{ 'தமிழ்' if session.get('lang', 'en') == 'en' else 'EN' }}
+                </a>
             </div>
         </div>
 
