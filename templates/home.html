@@ -19,10 +19,6 @@
             <div class="nav-links">
                 <a href="{{ url_for('login') }}">{{ get_text('login') }}</a>
                 <a href="{{ url_for('register') }}">{{ get_text('register') }}</a>
-                <a href="{{ url_for('guest_login', role='farmer') }}" style="border-color: #666; opacity: 0.8;">{{
-                    get_text('guest_login') }} ({{ get_text('farmer') }})</a>
-                <a href="{{ url_for('guest_login', role='buyer') }}" style="border-color: #666; opacity: 0.8;">{{
-                    get_text('guest_login') }} ({{ get_text('buyer') }})</a>
                 <button onclick="toggleTheme()" style="padding: 5px 10px;">🌓</button>
                 <a href="{{ url_for('set_language', lang='ta') if session.get('lang', 'en') == 'en' else url_for('set_language', lang='en') }}"
                     style="padding: 5px 10px;">
