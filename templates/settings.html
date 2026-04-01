@@ -10,53 +10,80 @@
 </head>
 
 <body>
-    <div class="container">
-        <div class="nav">
-            <div style="font-weight: 800;"><a href="{{ url_for('home') }}"
-                    style="border:none; padding:0; background:none; color:inherit;">CropSync</a></div>
-            <div class="nav-links">
-                <button id="theme-toggle" class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">🌓
-                    Theme</button>
-                {% if session['user']['role'] == 'farmer' %}
-                <a href="{{ url_for('farmer_dashboard') }}">{{ get_text('farmer_dashboard') }}</a>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-logo">CropSync</div>
+            <nav class="sidebar-nav">
+                {% if active_role == 'farmer' %}
+                <a href="{{ url_for('farmer_dashboard', section='home') }}" class="sidebar-link">{{ get_text('home') }}</a>
+                <a href="{{ url_for('farmer_dashboard', section='add-listing') }}" class="sidebar-link">{{ get_text('list_new_crop') }}</a>
+                <a href="{{ url_for('farmer_dashboard', section='my-listings') }}" class="sidebar-link">{{ get_text('my_crop_listings') }}</a>
+                <a href="{{ url_for('farmer_dashboard', section='sold-items') }}" class="sidebar-link">{{ get_text('sold_items') }}</a>
+                <a href="{{ url_for('farmer_dashboard', section='msp-reference') }}" class="sidebar-link">{{ get_text('msp_reference') }}</a>
                 {% else %}
-                <a href="{{ url_for('buyer_dashboard') }}">{{ get_text('buyer_dashboard') }}</a>
+                <a href="{{ url_for('buyer_dashboard', section='home') }}" class="sidebar-link">{{ get_text('home') }}</a>
+                <a href="{{ url_for('buyer_dashboard', section='marketplace') }}" class="sidebar-link">{{ get_text('marketplace') }}</a>
+                <a href="{{ url_for('buyer_dashboard', section='my-orders') }}" class="sidebar-link">{{ get_text('my_orders') }}</a>
+                <a href="{{ url_for('buyer_dashboard', section='msp-reference') }}" class="sidebar-link">{{ get_text('msp_reference') }}</a>
                 {% endif %}
-                <a href="{{ url_for('logout') }}">{{ get_text('logout') }}</a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="{{ url_for('settings', role=active_role) }}" class="sidebar-link active">{{ get_text('settings') }}</a>
+                <button id="theme-toggle" class="sidebar-link">Theme</button>
+                <a href="{{ url_for('logout', role=active_role) }}" class="sidebar-link" style="color: #e74c3c;">{{ get_text('logout') }}</a>
             </div>
         </div>
 
-        <div style="max-width: 450px; margin: 4rem auto;">
-            <h2 style="text-align: center; margin-bottom: 2rem;">{{ get_text('profile_settings') }}</h2>
-
-            {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-            <div class="flash-messages">
-                {% for category, message in messages %}
-                <div class="flash {{ category }}">{{ message }}</div>
-                {% endfor %}
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="dashboard-header">
+                <h1 style="margin: 0;">{{ get_text('settings') }}</h1>
+                <div style="font-size: 0.875rem; color: var(--secondary-text);">{{ active_role|capitalize }} Profile</div>
             </div>
-            {% endif %}
-            {% endwith %}
 
-            <form method="POST">
-                <div class="form-group">
-                    <label>{{ get_text('name') }}</label>
-                    <input type="text" name="name" value="{{ session['user']['name'] }}" required>
+            <div style="max-width: 600px;">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
                 </div>
-                <div class="form-group">
-                    <label>{{ get_text('email') }}</label>
-                    <input type="email" value="{{ session['user']['email'] }}" disabled style="opacity: 0.7;">
-                </div>
-                <div class="form-group">
-                    <label>{{ get_text('password') }}</label>
-                    <input type="password" name="password" placeholder="••••••••">
-                    <p style="font-size: 0.75rem; color: var(--secondary-text);">{{ get_text('password_info') }}</p>
-                </div>
-                <button type="submit" style="width: 100%;">{{ get_text('save_changes') }}</button>
-            </form>
+                {% endif %}
+                {% endwith %}
 
-        </div>
+                <form>
+                    <div class="form-group">
+                        <label>{{ get_text('name') }}</label>
+                        <input type="text" value="{{ session_user['name'] }}" disabled style="opacity: 0.8; cursor: not-allowed;">
+                    </div>
+                    <div class="form-group">
+                        <label>{{ get_text('email') }}</label>
+                        <input type="email" value="{{ session_user['email'] }}" disabled style="opacity: 0.8; cursor: not-allowed;">
+                    </div>
+                    <div class="form-group">
+                        <label>{{ get_text('phone') }}</label>
+                        <input type="text" value="{{ session_user.get('phone', '') }}" disabled style="opacity: 0.8; cursor: not-allowed;">
+                    </div>
+                    <div class="form-group">
+                        <label>{{ get_text('address') }}</label>
+                        <textarea disabled style="width: 100%; padding: 0.625rem; border: 1px solid var(--input-border); border-radius: var(--border-radius); font-size: 1rem; background-color: var(--input-bg); color: var(--text-color); font-family: inherit; opacity: 0.8; cursor: not-allowed;" rows="3">{{ session_user.get('address', '') }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>{{ get_text('location') }}</label>
+                        <input type="text" value="{{ session_user.get('location', '') }}" disabled style="opacity: 0.8; cursor: not-allowed;">
+                    </div>
+                </form>
+                
+                <div style="margin-top: 2rem; padding: 1.5rem; background: var(--nav-bg); border-radius: var(--border-radius); border: 1px solid var(--nav-border); text-align: center;">
+                    <p style="font-size: 0.875rem; color: var(--secondary-text); line-height: 1.5;">
+                        <strong>Note:</strong> These are predefined demo account details and cannot be modified. <br>
+                        Contact support for corporate account changes.
+                    </p>
+                </div>
+            </div>
+        </main>
     </div>
 
     <script>

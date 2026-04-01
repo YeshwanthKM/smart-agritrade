@@ -18,9 +18,7 @@
             <div style="font-weight: 800;"><a href="{{ url_for('home') }}"
                     style="border:none; padding:0; background:none; color:inherit;">CropSync</a></div>
             <div class="nav-links">
-                <button id="theme-toggle" class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">🌓
-                    Theme</button>
-                <a href="{{ url_for('register') }}">{{ get_text('register') }}</a>
+                <button id="theme-toggle" class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">🌓 Theme</button>
             </div>
         </div>
 
@@ -48,10 +46,26 @@
                 </div>
                 <button type="submit" style="width: 100%;">{{ get_text('login') }}</button>
             </form>
-            <p style="text-align: center; margin-top: 1rem;">
-                {{ get_text('no_account') }} <a href="{{ url_for('register') }}"
-                    style="border: none; text-decoration: underline; padding: 0;">{{ get_text('register_here') }}</a>
-            </p>
+
+            <div style="margin-top: 2rem; padding: 1.5rem; background: var(--nav-bg); border: 1px solid var(--nav-border); border-radius: var(--border-radius);">
+                <h3 style="margin-bottom: 1rem; text-align: center;">{{ get_text('demo_credentials') }}</h3>
+                
+                <div style="margin-bottom: 1.5rem;">
+                    <h4 style="margin-bottom: 0.5rem; color: var(--secondary-text);">{{ get_text('farmer_accounts') }}</h4>
+                    <ul style="list-style: none; padding: 0; font-size: 0.9rem;">
+                        <li><strong>farmer1@gmail.com, farmer2@gmail.com, farmer3@gmail.com, farmer4@gmail.com</strong></li>
+                        <li>Password: <strong>farmer123</strong></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 style="margin-bottom: 0.5rem; color: var(--secondary-text);">{{ get_text('buyer_accounts') }}</h4>
+                    <ul style="list-style: none; padding: 0; font-size: 0.9rem;">
+                        <li><strong>buyer1@gmail.com, buyer2@gmail.com, buyer3@gmail.com, buyer4@gmail.com</strong></li>
+                        <li>Password: <strong>buyer123</strong></li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
         <script>
