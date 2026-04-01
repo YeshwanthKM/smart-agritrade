@@ -11,6 +11,7 @@
 
 <body>
     <div class="dashboard-layout">
+        <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="sidebar-logo">CropSync</div>
@@ -30,6 +31,13 @@
 
         <!-- Main Content -->
         <main class="main-content">
+            <button class="mobile-toggle" onclick="toggleSidebar()" style="position: absolute; top: 1.5rem; left: 1.25rem; z-index: 1001;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
             <div class="dashboard-header">
                 <h1 style="margin: 0;">{{ get_text('farmer_dashboard') }}</h1>
                 <div style="font-size: 0.875rem; color: var(--secondary-text);">Welcome back, <strong>{{ session['farmer_user']['name'] }}</strong></div>
@@ -104,7 +112,7 @@
                 </form>
             </div>
 
-            <!-- Section: My Listings -->
+            <!-- Section: My Crop Listings -->
             <div id="section-my-listings" class="dashboard-section" style="display: none;">
                 <h2>{{ get_text('my_crop_listings') }}</h2>
                 <div class="table-container">
@@ -144,7 +152,7 @@
             <!-- Section: Orders & Sales -->
             <div id="section-sold-items" class="dashboard-section" style="display: none;">
                 <h2>Orders & Sales</h2>
-                <div class="card">
+                <div class="table-container">
                     <table>
                         <thead>
                             <tr>
@@ -234,6 +242,14 @@
                     link.classList.add('active');
                 }
             });
+
+            // Close sidebar on mobile after selection
+            document.body.classList.remove('sidebar-active');
+        }
+
+        // Sidebar Toggle Logic
+        function toggleSidebar() {
+            document.body.classList.toggle('sidebar-active');
         }
 
         // Theme Toggle

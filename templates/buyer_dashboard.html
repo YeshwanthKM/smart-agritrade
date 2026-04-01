@@ -11,6 +11,7 @@
 
 <body>
     <div class="dashboard-layout">
+        <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="sidebar-logo">CropSync</div>
@@ -29,6 +30,13 @@
 
         <!-- Main Content -->
         <main class="main-content">
+            <button class="mobile-toggle" onclick="toggleSidebar()" style="position: absolute; top: 1.5rem; left: 1.25rem; z-index: 1001;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
             <div class="dashboard-header">
                 <h1 style="margin: 0;">{{ get_text('buyer_dashboard') }}</h1>
                 <div style="font-size: 0.875rem; color: var(--secondary-text);">Welcome back, <strong>{{ session['buyer_user']['name'] }}</strong></div>
@@ -65,10 +73,9 @@
 
             <!-- Section: Marketplace -->
             <div id="section-marketplace" class="dashboard-section" style="display: none;">
-                <div style="margin-bottom: 3rem;">
+                <div class="card">
                     <h2>{{ get_text('search_marketplace') }}</h2>
-                    <form method="GET" action="{{ url_for('buyer_dashboard') }}"
-                        style="display: flex; gap: 1rem; padding: 1.5rem; align-items: flex-end; background: var(--card-bg); border: 1px solid var(--nav-border); box-shadow: var(--shadow); border-radius: var(--border-radius); flex-wrap: wrap;">
+                    <form method="GET" action="{{ url_for('buyer_dashboard') }}" style="display: flex; gap: 1rem; padding: 1.5rem; align-items: flex-end; background: var(--card-bg); border: 1px solid var(--nav-border); box-shadow: var(--shadow); border-radius: var(--border-radius); flex-wrap: wrap;">
                         <input type="hidden" name="section" value="marketplace">
                         <div class="form-group" style="flex: 2; min-width: 200px; margin-bottom: 0;">
                             <label>{{ get_text('crop_name') }}</label>
@@ -137,8 +144,9 @@
             <!-- Section: My Orders -->
             <div id="section-my-orders" class="dashboard-section" style="display: none;">
                 <h2>{{ get_text('my_orders') }}</h2>
-                <div class="card">
-                    <table>
+                <div class="card" style="padding: 0;">
+                    <div class="table-container">
+                        <table>
                         <thead>
                             <tr>
                                 <th>{{ get_text('crop_name') }}</th>
@@ -217,6 +225,14 @@
                     link.classList.add('active');
                 }
             });
+
+            // Close sidebar on mobile after selection
+            document.body.classList.remove('sidebar-active');
+        }
+
+        // Sidebar Toggle Logic
+        function toggleSidebar() {
+            document.body.classList.toggle('sidebar-active');
         }
 
         // Theme Toggle
