@@ -1,148 +1,380 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CropSync</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script>
-        const theme = localStorage.getItem('theme') || 'light';
-        document.documentElement.setAttribute('data-theme', theme);
-    </script>
+    <meta name="description" content="CropSync is a transparent digital marketplace connecting farmers directly with buyers for fair pricing and better income.">
+    <link rel="stylesheet" href="{{ url_for('static', filename='landing.css') }}">
 </head>
 
-<body>
-    <div class="container">
-        <div class="nav">
-            <div style="font-weight: 800; font-size: 1.5rem;">CropSync</div>
-            <div class="nav-links">
-                <a href="{{ url_for('login') }}">{{ get_text('login') }}</a>
-                <button id="theme-toggle" class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">🌓 Theme</button>
-            </div>
-        </div>
+<body class="landing-page">
 
-        <!-- Hero Section -->
-        <div class="hero-section" style="padding: 4rem 1rem; text-align: center; border-bottom: 1px solid var(--nav-border);">
-            <h1 style="font-size: clamp(2rem, 8vw, 3.5rem); margin-bottom: 1.5rem; line-height: 1.2;">🌾 {{ get_text('tagline') }} – A
-                Transparent Farmer–Buyer Digital Marketplace</h1>
-            <p
-                style="font-size: clamp(1rem, 4vw, 1.25rem); color: var(--secondary-text); margin-bottom: 2.5rem; max-width: 800px; margin-left: auto; margin-right: auto;">
-                {{ get_text('welcome') }}
-            </p>
-            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                <a href="{{ url_for('login') }}" class="btn"
-                    style="padding: 0.8rem 2rem; font-size: 1.1rem; background: var(--text-color); color: var(--bg-color);">{{ get_text('login') }}</a>
+    <!-- ===== NAVIGATION ===== -->
+    <nav class="landing-nav" id="mainNav">
+        <div class="nav-inner">
+            <a href="{{ url_for('home') }}" class="nav-logo">🌾 <span>CropSync</span></a>
+            <div class="nav-links" id="navLinks">
+                <a href="#about">About</a>
+                <a href="#features">Features</a>
+                <a href="#compare">Compare</a>
+                <a href="#impact">Impact</a>
+                <a href="{{ url_for('login') }}" class="nav-cta">Login →</a>
             </div>
+            <button class="mobile-menu-btn" onclick="document.getElementById('navLinks').classList.toggle('active')">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+                </svg>
+            </button>
         </div>
+    </nav>
 
-        <!-- Problem Section -->
-        <div style="padding: 3rem 1rem; border-bottom: 1px solid var(--nav-border);">
-            <div style="max-width: 850px; margin: 0 auto; text-align: center;">
-                <h2 style="color: #e74c3c; border: none; margin-bottom: 1.5rem; font-size: clamp(1.5rem, 6vw, 2rem);">📌 {{
-                    get_text('problem_statement') }}</h2>
-                <p style="font-size: clamp(1rem, 4vw, 1.15rem); line-height: 1.7; color: var(--secondary-text);">{{
-                    get_text('problem_desc') }}</p>
-            </div>
-        </div>
-
-        <!-- Solution Section -->
-        <div style="padding: 3rem 1rem; border-bottom: 1px solid var(--nav-border);">
-            <div style="max-width: 850px; margin: 0 auto; text-align: center;">
-                <h2 style="color: #27ae60; border: none; margin-bottom: 1.5rem; font-size: clamp(1.5rem, 6vw, 2rem);">💡 {{
-                    get_text('our_solution') }}</h2>
-                <p style="font-size: clamp(1rem, 4vw, 1.15rem); line-height: 1.7; color: var(--secondary-text);">{{ get_text('sol_desc')
-                    }}</p>
-            </div>
-        </div>
-
-        <!-- Features Section -->
-        <div style="padding: 5rem 0; border-bottom: 1px solid var(--nav-border);">
-            <h2 style="text-align: center; margin-bottom: 3.5rem; border: none; font-size: 2.2rem;">✨ {{
-                get_text('key_features') }}</h2>
-            <div class="grid">
-                <div class="card" style="padding: 2rem; border-top: 4px solid var(--text-color);">
-                    <div style="font-size: 2rem; margin-bottom: 1rem;">👨‍🌾</div>
-                    <p style="font-size: 1rem; color: var(--secondary-text);">{{ get_text('feature_dash') }}</p>
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-content">
+                <div class="hero-brand-top">
+                    <span>🌾</span> CropSync
                 </div>
-                <div class="card" style="padding: 2rem; border-top: 4px solid var(--text-color);">
-                    <div style="font-size: 2rem; margin-bottom: 1rem;">🛍️</div>
-                    <p style="font-size: 1rem; color: var(--secondary-text);">{{ get_text('feature_market') }}</p>
+                <div class="hero-badge">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><path d="m12 14 4-4-4-4"/><path d="M3.3 7H9l5 12h5.7"/><path d="m16 9 4 4-4 4"/></svg>
+                    Built for Indian Agriculture
                 </div>
-                <div class="card" style="padding: 2rem; border-top: 4px solid var(--text-color);">
-                    <div style="font-size: 2rem; margin-bottom: 1rem;">📊</div>
-                    <p style="font-size: 1rem; color: var(--secondary-text);">{{ get_text('feature_price') }}</p>
-                </div>
-                <div class="card" style="padding: 2rem; border-top: 4px solid var(--text-color);">
-                    <div style="font-size: 2rem; margin-bottom: 1rem;">🤝</div>
-                    <p style="font-size: 1rem; color: var(--secondary-text);">{{ get_text('feature_connect') }}</p>
+                <h1 class="hero-title">
+                    Empowering Farmers.<br>
+                    <span class="highlight">Connecting Markets.</span>
+                </h1>
+                <p class="hero-text">
+                    A transparent digital marketplace that connects farmers directly with buyers — ensuring fair pricing through MSP awareness and eliminating unnecessary middlemen.
+                </p>
+                <div class="hero-actions">
+                    <a href="{{ url_for('login') }}" class="btn-primary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        Join as Farmer
+                    </a>
+                    <a href="{{ url_for('login') }}" class="btn-secondary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                        Explore Marketplace
+                    </a>
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- How It Works Section -->
-        <div style="padding: 3rem 1rem; border-bottom: 1px solid var(--nav-border);">
-            <h2 style="text-align: center; margin-bottom: 2.5rem; border: none; font-size: clamp(1.8rem, 7vw, 2.2rem);">🚀 {{
-                get_text('how_it_works') }}</h2>
-            <div style="max-width: 700px; margin: 0 auto;">
-                <div style="display: flex; gap: 1.5rem; margin-bottom: 2rem; align-items: flex-start;">
-                    <div
-                        style="min-width: 40px; height: 40px; border-radius: 50%; background: var(--text-color); color: var(--bg-color); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.25rem; flex-shrink: 0;">
-                        1</div>
-                    <p style="font-size: clamp(1rem, 4vw, 1.2rem);">{{ get_text('how_1') }}</p>
-                </div>
-                <div style="display: flex; gap: 1.5rem; margin-bottom: 2rem; align-items: flex-start;">
-                    <div
-                        style="min-width: 40px; height: 40px; border-radius: 50%; background: var(--text-color); color: var(--bg-color); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.25rem; flex-shrink: 0;">
-                        2</div>
-                    <p style="font-size: clamp(1rem, 4vw, 1.2rem);">{{ get_text('how_2') }}</p>
-                </div>
-                <div style="display: flex; gap: 1.5rem; margin-bottom: 2rem; align-items: flex-start;">
-                    <div
-                        style="min-width: 40px; height: 40px; border-radius: 50%; background: var(--text-color); color: var(--bg-color); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.25rem; flex-shrink: 0;">
-                        3</div>
-                    <p style="font-size: clamp(1rem, 4vw, 1.2rem);">{{ get_text('how_3') }}</p>
-                </div>
+    <!-- ===== ABOUT ===== -->
+    <section class="landing-section about-section" id="about">
+        <div class="about-content animate-on-scroll">
+            <div class="section-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                Our Mission
             </div>
-        </div>
-
-        <!-- Impact Section -->
-        <div style="padding: 3rem 1rem;">
-            <div style="max-width: 850px; margin: 0 auto; text-align: center;">
-                <h2 style="color: #3498db; border: none; margin-bottom: 2rem; font-size: clamp(1.5rem, 6vw, 2rem);">🌍 {{
-                    get_text('expected_impact') }}</h2>
-                <div class="card" style="padding: 2rem; text-align: left; background: var(--nav-bg);">
-                    <ul style="list-style: none; padding: 0;">
-                        <li
-                            style="margin-bottom: 1rem; display: flex; align-items: flex-start; gap: 1rem; font-weight: 600;">
-                            <span>✅</span> <span>{{ get_text('impact_1') }}</span></li>
-                        <li
-                            style="margin-bottom: 1rem; display: flex; align-items: flex-start; gap: 1rem; font-weight: 600;">
-                            <span>✅</span> <span>{{ get_text('impact_2') }}</span></li>
-                        <li
-                            style="margin-bottom: 1rem; display: flex; align-items: flex-start; gap: 1rem; font-weight: 600;">
-                            <span>✅</span> <span>{{ get_text('impact_3') }}</span></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="footer" style="padding: 3rem 0;">
-            <p style="font-weight: 700; font-size: 1.25rem; margin-bottom: 0.5rem;">CropSync</p>
-            <p style="color: var(--secondary-text); margin-bottom: 1rem;">A Transparent Farmer–Buyer Digital Marketplace
+            <h2 class="section-title">Bridging the Gap Between Farm and Market</h2>
+            <p>
+                Agriculture supports nearly 45% of India's workforce, yet small and marginal farmers often struggle to receive fair prices 
+                for their crops. CropSync bridges this gap by creating a transparent, digital-first marketplace that connects farmers 
+                directly with buyers — eliminating middlemen, promoting fair trade, and empowering rural communities with technology.
             </p>
         </div>
-    </div>
+    </section>
 
+    <!-- ===== PROBLEM ===== -->
+    <section class="landing-section section-center">
+        <div class="animate-on-scroll">
+            <div class="section-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                The Challenge
+            </div>
+            <h2 class="section-title">Why Farmers Struggle Today</h2>
+            <p class="section-subtitle">Despite being the backbone of our economy, farmers face systemic barriers that reduce their income and livelihood.</p>
+        </div>
+        <div class="problem-grid">
+            <div class="problem-card animate-on-scroll">
+                <div class="problem-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                </div>
+                <h3>Middlemen Dependency</h3>
+                <p>Farmers are forced to sell through intermediaries who take large cuts, drastically reducing the farmer's share of profit.</p>
+            </div>
+            <div class="problem-card animate-on-scroll">
+                <div class="problem-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                </div>
+                <h3>Unfair Pricing</h3>
+                <p>Without price transparency, farmers often sell below MSP due to lack of market information and bargaining power.</p>
+            </div>
+            <div class="problem-card animate-on-scroll">
+                <div class="problem-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                </div>
+                <h3>Low Farmer Income</h3>
+                <p>After paying intermediary fees, transport, and storage — the farmer's actual earnings are a fraction of the market price.</p>
+            </div>
+            <div class="problem-card animate-on-scroll">
+                <div class="problem-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </div>
+                <h3>Lack of Transparency</h3>
+                <p>Prices, buyer details, and market trends are often opaque, leaving farmers without the data they need to make informed decisions.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SOLUTION ===== -->
+    <section class="landing-section solution-section">
+        <div class="section-center animate-on-scroll">
+            <div class="section-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .5 2.2 1.5 3.1.7.7 1.3 1.5 1.5 2.5"/><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/></svg>
+                Our Solution
+            </div>
+            <h2 class="section-title">How CropSync Works</h2>
+            <p class="section-subtitle">A simple, transparent, and farmer-first digital marketplace.</p>
+        </div>
+        <div class="solution-grid">
+            <div class="animate-on-scroll">
+                <h3 style="font-size: 1.35rem; font-weight: 700; color: var(--gray-800); margin-bottom: 0.75rem;">Direct Connection. Fair Pricing. Better Income.</h3>
+                <p style="color: var(--gray-500); line-height: 1.75; margin-bottom: 1.5rem;">
+                    CropSync removes the need for intermediaries by connecting farmers directly with buyers. Our platform integrates 
+                    Government MSP data so both parties can make informed pricing decisions.
+                </p>
+                <ul class="solution-points">
+                    <li>
+                        <span class="solution-check">✓</span>
+                        <span><strong>Direct farmer-to-buyer trade</strong> — no middlemen involved</span>
+                    </li>
+                    <li>
+                        <span class="solution-check">✓</span>
+                        <span><strong>MSP-aware pricing</strong> — prevents underpricing of crops</span>
+                    </li>
+                    <li>
+                        <span class="solution-check">✓</span>
+                        <span><strong>Order approval system</strong> — farmers control their sales</span>
+                    </li>
+                    <li>
+                        <span class="solution-check">✓</span>
+                        <span><strong>Lightweight & accessible</strong> — works on any device</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="solution-visual animate-on-scroll">
+                <div class="solution-flow">
+                    <div class="flow-item">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-item">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-item">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                    </div>
+                </div>
+                <p>Farmer lists crops • Platform connects • Buyer purchases directly</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FEATURES ===== -->
+    <section class="landing-section section-center" id="features">
+        <div class="animate-on-scroll">
+            <div class="section-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.71-2.13.09-3.05a3.91 3.91 0 0 0-3.09 0Z"/><path d="M14 10l7.5 7.5"/><path d="M9 15l.5.5"/><path d="M16 8l.5.5"/><path d="M17.5 3a2.12 2.12 0 0 1 3 3L13 13.5l-3-3L17.5 3Z"/></svg>
+                Platform Features
+            </div>
+            <h2 class="section-title">Everything You Need, Nothing You Don't</h2>
+            <p class="section-subtitle">Built with simplicity and accessibility at its core.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card animate-on-scroll">
+                <div class="feature-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                </div>
+                <h3>Farmer Dashboard</h3>
+                <p>List crops, manage orders, track earnings, and view MSP reference prices — all from one clean interface.</p>
+            </div>
+            <div class="feature-card animate-on-scroll">
+                <div class="feature-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                </div>
+                <h3>Buyer Marketplace</h3>
+                <p>Browse available crops by name and location, compare prices with MSP, and place orders directly from farmers.</p>
+            </div>
+            <div class="feature-card animate-on-scroll">
+                <div class="feature-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                </div>
+                <h3>Transparent Pricing</h3>
+                <p>Real-time MSP reference data for 12+ crops ensures farmers never sell below government-mandated minimum prices.</p>
+            </div>
+            <div class="feature-card animate-on-scroll">
+                <div class="feature-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+                </div>
+                <h3>Lightweight System</h3>
+                <p>No heavy apps to download. Works seamlessly on any browser, any device — designed for rural connectivity.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== COMPARISON ===== -->
+    <section class="landing-section comparison-section section-center" id="compare">
+        <div class="animate-on-scroll">
+            <div class="section-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M12 22v-8.3a4 4 0 0 0-1.172-2.828L3 3"/><path d="m15 11.172 6-6"/></svg>
+                Why CropSync?
+            </div>
+            <h2 class="section-title">How CropSync Stands Out</h2>
+            <p class="section-subtitle">See how we compare against the traditional trade experience.</p>
+        </div>
+        <div class="comparison-table-wrap animate-on-scroll">
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Typical Platforms</th>
+                        <th>🌾 CropSync</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Farmer Price Control</td>
+                        <td><span class="icon-no">✗</span> Limited</td>
+                        <td><span class="icon-yes">✓</span> Full Control</td>
+                    </tr>
+                    <tr>
+                        <td>Price Transparency (MSP)</td>
+                        <td><span class="icon-warn">⚠</span> Rarely shown</td>
+                        <td><span class="icon-yes">✓</span> Always visible</td>
+                    </tr>
+                    <tr>
+                        <td>Middlemen Involvement</td>
+                        <td><span class="icon-no">✗</span> Often present</td>
+                        <td><span class="icon-yes">✓</span> Zero middlemen</td>
+                    </tr>
+                    <tr>
+                        <td>Ease of Use</td>
+                        <td><span class="icon-warn">⚠</span> Complex UIs</td>
+                        <td><span class="icon-yes">✓</span> Minimal & clean</td>
+                    </tr>
+                    <tr>
+                        <td>Focus on Small Farmers</td>
+                        <td><span class="icon-no">✗</span> Enterprise-first</td>
+                        <td><span class="icon-yes">✓</span> Farmer-first</td>
+                    </tr>
+                    <tr>
+                        <td>Order Approval System</td>
+                        <td><span class="icon-no">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        </span> Auto-processed</td>
+                        <td><span class="icon-yes">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        </span> Farmer decides</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="comparison-note animate-on-scroll">CropSync improves existing systems by focusing on transparency and farmer empowerment.</p>
+    </section>
+
+    <!-- ===== IMPACT ===== -->
+    <section class="landing-section section-center" id="impact">
+        <div class="animate-on-scroll">
+            <div class="section-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; color: var(--accent);"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>
+                Our Impact
+            </div>
+            <h2 class="section-title">Building a Fairer Agricultural Future</h2>
+            <p class="section-subtitle">Aligned with sustainable development goals for a better tomorrow.</p>
+        </div>
+        <div class="impact-grid">
+            <div class="impact-card animate-on-scroll">
+                <div class="impact-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+                </div>
+                <h3>Better Farmer Income</h3>
+                <p>By eliminating intermediaries, farmers retain a significantly larger share of the crop's market value.</p>
+            </div>
+            <div class="impact-card animate-on-scroll">
+                <div class="impact-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20 12 7l1 13"/><path d="M5 12.1a10.9 10.9 0 0 0 5.1 4.9"/><path d="M19 12.1a10.9 10.9 0 0 1-5.1 4.9"/><path d="M22 13a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1l1-8a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3l1 8Z"/></svg>
+                </div>
+                <h3>Sustainable Agriculture</h3>
+                <p>Fair pricing incentivises sustainable farming practices and reduces distress-driven decisions.</p>
+            </div>
+            <div class="impact-card animate-on-scroll">
+                <div class="impact-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.06-1.7.21-2.43.44C18.25 17.11 17.16 18 16 18c-1.16 0-2.25-.89-3.57-1.56C11.7 16.21 10.87 16.06 10 16l3-8 3 8Z"/><path d="M22 21H2"/><path d="M16 18v3"/><path d="M10 18v3"/><path d="M13 18v3"/><path d="M16 18l.58 2.02c.2.69 1.05.69 1.25 0L19 18"/></svg>
+                </div>
+                <h3>Fair Trade Ecosystem</h3>
+                <p>Complete transparency in pricing and trade builds trust between farmers and buyers at every level.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CTA BANNER ===== -->
+    <section class="cta-section">
+        <div class="cta-content animate-on-scroll">
+            <h2>Join the Future of Fair Agriculture</h2>
+            <p>Whether you grow crops or buy them — CropSync gives you the transparency, control, and connection you deserve.</p>
+            <div class="cta-actions animate-on-scroll">
+                <a href="{{ url_for('register') }}" class="btn-cta-primary">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    Join as Farmer
+                </a>
+                <a href="{{ url_for('buyer_dashboard') }}" class="btn-cta-secondary">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+                    Explore Marketplace
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="landing-footer">
+        <div class="footer-inner" style="display: block; text-align: center;">
+            <div class="footer-brand">
+                <h3 style="font-size: 2rem; margin-bottom: 1rem;">🌾 CropSync</h3>
+                <p style="max-width: 600px; margin: 0 auto 2rem;">A transparent farmer–buyer digital marketplace ensuring fair pricing and direct trade.</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>CropSync. Built for Indian agriculture.</span>
+            <span>Made with 💚 for Farmers</span>
+        </div>
+    </footer>
+
+    <!-- ===== SCRIPTS ===== -->
     <script>
-        document.getElementById('theme-toggle').addEventListener('click', () => {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('mainNav');
+            nav.classList.toggle('scrolled', window.scrollY > 50);
         });
-    </script>
-</body>
 
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Close mobile nav
+                    document.getElementById('navLinks').classList.remove('active');
+                }
+            });
+        });
+
+        // Scroll animation observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+    </script>
+
+</body>
 </html>
