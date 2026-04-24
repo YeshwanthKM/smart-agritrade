@@ -39,14 +39,19 @@ def save_data(file_path, data):
     with open(file_path, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
 
+def reset_demo_data():
+    """Resets the demo environment to a clean state on startup."""
+    # Reset Users to only the SEED_USERS
+    save_data(USERS_FILE, SEED_USERS)
+    # Clear all dynamic data
+    save_data(CROPS_FILE, [])
+    save_data(ORDERS_FILE, [])
+
 def ensure_demo_users():
+    # This is now largely handled by reset_demo_data but kept for double safety
     users = load_data(USERS_FILE)
-    existing_emails = {u['email'] for u in users}
-    
-    needed_seeds = [u for u in SEED_USERS if u['email'] not in existing_emails]
-    if needed_seeds:
-        users.extend(needed_seeds)
-        save_data(USERS_FILE, users)
+    if not users:
+        save_data(USERS_FILE, SEED_USERS)
 
 # MSP Reference Data
 MSP_DATA = {
@@ -413,6 +418,7 @@ def logout():
     return redirect(url_for('home'))
 
 if __name__ == '__main__':
+    reset_demo_data() # Reset data every time server starts (perfect for Render sleep logic)
     ensure_demo_users()
     port = int(os.environ.get('PORT', 5001))
     app.run(host='0.0.0.0', port=port, debug=True)
