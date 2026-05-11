@@ -824,6 +824,7 @@ body.landing-page {
     .hero-illustration { max-width: 450px; }
     .solution-grid { grid-template-columns: 1fr; }
     .footer-inner { grid-template-columns: 1fr 1fr; }
+    .problem-grid, .features-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 768px) {
@@ -831,6 +832,8 @@ body.landing-page {
     .nav-links { display: none; }
     .cta-actions { flex-direction: column; gap: 1rem; }
     .btn-cta-primary, .btn-cta-secondary { width: 100%; }
+    .problem-grid, .features-grid { grid-template-columns: 1fr; }
+    .footer-inner { grid-template-columns: 1fr; }
 }
 
 /* Scroll Animation */
